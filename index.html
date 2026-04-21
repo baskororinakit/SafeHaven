@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeHaven | Community Security Platform</title>
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="light-theme">
+
+    <nav class="main-nav" data-aos="fade-down" data-aos-duration="500">
+        <div class="nav-container">
+            <div class="logo">🌲 SafeHaven</div>
+            
+            <ul class="nav-links">
+                <li><a href="#features" data-i18n="nav-features">Fitur</a></li>
+                <li><a href="#education" data-i18n="nav-edu">Edukasi</a></li>
+                <li><a href="#report-section" id="nav-report" style="display: none;" data-i18n="nav-report">Lapor</a></li>
+                <li><a href="#admin-dashboard" id="nav-admin" style="display: none;" data-i18n="nav-admin">Dashboard</a></li>
+                
+                <li>
+                    <button id="btn-notif" class="icon-btn notif-btn" style="display: none;" title="Notifikasi">
+                        🔔 <span id="notif-badge" class="badge-count">0</span>
+                    </button>
+                </li>
+                
+                <li class="nav-controls">
+                    <button id="theme-toggle" class="icon-btn" title="Ganti Tema">🌓</button>
+                    <select id="lang-switch" class="lang-select">
+                        <option value="id">ID</option>
+                        <option value="en">EN</option>
+                    </select>
+                </li>
+
+                <li><button id="btn-login-modal" class="btn-login" data-i18n="btn-login" onclick="openLoginModal()">Masuk</button></li>
+                <li><button id="btn-logout" class="btn-login" style="display: none;" data-i18n="btn-logout">Keluar</button></li>
+            </ul>
+            
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="hero-content" data-aos="zoom-in" data-aos-duration="1000">
+            <span class="badge" data-i18n="hero-badge">Komunitas Aman & Nyaman</span>
+            <h1 data-i18n="hero-title">Ketika Keamanan Bertemu Kesadaran.</h1>
+            <p data-i18n="hero-desc">Membangun lingkungan yang lebih aman melalui kesadaran kolektif dan teknologi pelaporan yang transparan.</p>
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="300">
+                <a href="#report-section" class="btn-main" onclick="checkAuthForReport(event)" data-i18n="btn-report">Lapor Kejadian</a>
+                <a href="#features" class="btn-sub" data-i18n="btn-explore">Pelajari Tips</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="section-container">
+        <div class="section-header" data-aos="fade-up">
+            <h2 data-i18n="feat-title">Layanan Kami</h2>
+            <p data-i18n="feat-subtitle">Fitur utama untuk mendukung keamanan lingkungan Anda.</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feat-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="card-icon">🚨</div>
+                <h3 data-i18n="f1-t">Report Kriminal</h3>
+                <p data-i18n="f1-d">Sistem pelaporan anonim yang cepat dan responsif bagi seluruh warga.</p>
+            </div>
+            <div class="feat-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="card-icon">📊</div>
+                <h3 data-i18n="f2-t">Analisis Data</h3>
+                <p data-i18n="f2-d">Visualisasi statistik keamanan lingkungan secara berkala dan transparan.</p>
+            </div>
+            <div class="feat-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="card-icon">🧠</div>
+                <h3 data-i18n="f3-t">Edukasi Warga</h3>
+                <p data-i18n="f3-d">Tips pencegahan kejahatan sehari-hari untuk menjaga keluarga Anda.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section-container bg-alt">
+        <div class="section-header" data-aos="fade-up">
+            <h2 data-i18n="edu-title">Edukasi Pencegahan</h2>
+        </div>
+        <div class="edu-modern-grid">
+            <div class="edu-item" data-aos="fade-right">
+                <div class="edu-image-placeholder">🛡️</div>
+                <div class="edu-text">
+                    <h4 data-i18n="e1-t">Keamanan Kendaraan</h4>
+                    <p data-i18n="e1-d">Gunakan kunci ganda dan parkir di tempat yang terpantau CCTV atau memiliki penerangan cukup.</p>
+                </div>
+            </div>
+            <div class="edu-item" data-aos="fade-left">
+                <div class="edu-text">
+                    <h4 data-i18n="e2-t">Waspada Penipuan</h4>
+                    <p data-i18n="e2-d">Jangan pernah memberikan data pribadi atau kode OTP kepada siapapun melalui telepon.</p>
+                </div>
+                <div class="edu-image-placeholder">📱</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="report-section" class="section-container" style="display: none;">
+        <div class="form-container glass-morph" data-aos="zoom-in">
+            <h2 data-i18n="report-form-title">Buat Laporan Baru</h2>
+            <form id="report-form">
+                <div class="input-group">
+                    <input type="text" id="report-name" data-i18n-placeholder="report-ph-name" placeholder="Nama (Opsional)">
+                </div>
+                <div class="input-group">
+                    <input type="text" id="report-location" required data-i18n-placeholder="report-ph-loc" placeholder="Lokasi Kejadian">
+                </div>
+                <div class="input-group">
+                    <select id="report-type" required>
+                        <option value="Pencurian" data-i18n="opt-1">Pencurian</option>
+                        <option value="Penipuan" data-i18n="opt-2">Penipuan</option>
+                        <option value="Vandalisme" data-i18n="opt-3">Vandalisme</option>
+                        <option value="Aktivitas Mencurigakan" data-i18n="opt-4">Aktivitas Mencurigakan</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <textarea id="report-desc" rows="4" required data-i18n-placeholder="report-ph-desc" placeholder="Deskripsi Kejadian Secara Detail"></textarea>
+                </div>
+                <button type="submit" class="btn-main w-full" data-i18n="btn-submit">Kirim Laporan Sekarang</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="admin-dashboard" class="section-container" style="display: none;">
+        <div class="dashboard-wrapper" data-aos="fade-up" style="max-width: 900px;">
+            <h2 data-i18n="admin-title" style="margin-bottom: 2rem;">Dashboard Pengurus</h2>
+            
+            <div class="admin-tabs" style="display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 1px solid var(--glass-border); padding-bottom: 1rem;">
+                <button id="btn-tab-reports" class="btn-main" onclick="switchAdminDashboardTab('reports')">Data Laporan</button>
+                <button id="btn-tab-users" class="btn-sub" onclick="switchAdminDashboardTab('users')">Manajemen User</button>
+            </div>
+
+            <div id="admin-view-reports">
+                <div class="report-list" id="report-list">
+                    </div>
+            </div>
+
+            <div id="admin-view-users" style="display: none;">
+                <div class="user-list" id="user-list">
+                    </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2026 SafeHaven. <span data-i18n="footer-text">Dibuat untuk meningkatkan keamanan komunitas.</span></p>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal">
+        <div class="modal-content glass-morph" data-aos="zoom-in" data-aos-duration="300">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            
+            <div class="auth-tabs">
+                <button class="tab-btn active" id="tab-user-login" onclick="switchAuthTab('user-login')" data-i18n="tab-login">Masuk</button>
+                <button class="tab-btn" id="tab-user-signup" onclick="switchAuthTab('user-signup')" data-i18n="tab-signup">Daftar</button>
+                <button class="tab-btn" id="tab-admin-login" onclick="switchAuthTab('admin-login')">Admin</button>
+            </div>
+
+            <div id="form-user-login" class="auth-form active-form">
+                <h2 data-i18n="auth-log-title">Selamat Datang</h2>
+                <p data-i18n="auth-log-sub">Silakan masuk untuk berkontribusi.</p>
+                <form id="user-login-form">
+                    <p id="ul-error" id="error-msg" class="error-msg" style="display: none;"></p>
+                    <input type="text" id="ul-username" data-i18n-placeholder="ph-username" placeholder="Username" required oninput="clearError('ul')">
+                    <input type="password" id="ul-password" data-i18n-placeholder="ph-password" placeholder="Password" required oninput="clearError('ul')">
+                    <button type="submit" class="btn-main w-full" data-i18n="btn-login-submit">Login</button>
+                </form>
+            </div>
+
+            <div id="form-user-signup" class="auth-form" style="display: none;">
+                <h2 data-i18n="auth-reg-title">Daftar Baru</h2>
+                <p data-i18n="auth-reg-sub">Mari jaga keamanan lingkungan bersama.</p>
+                <form id="user-signup-form">
+                    <p id="us-error" class="error-msg" style="display: none;"></p>
+                    <input type="text" id="us-username" data-i18n-placeholder="ph-new-user" placeholder="Buat Username" required oninput="clearError('us')">
+                    <input type="password" id="us-password" data-i18n-placeholder="ph-new-pass" placeholder="Buat Password" required oninput="clearError('us')">
+                    <button type="submit" class="btn-main w-full" data-i18n="btn-reg-submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div id="form-admin-login" class="auth-form" style="display: none;">
+                <h2 data-i18n="auth-adm-title">Akses Admin</h2>
+                <p data-i18n="auth-adm-sub">Khusus pengurus lingkungan.</p>
+                <form id="admin-login-form">
+                    <p id="al-error" class="error-msg" style="display: none;"></p>
+                    <input type="text" id="al-username" placeholder="Admin Username" required oninput="clearError('al')">
+                    <input type="password" id="al-password" placeholder="Admin Password" required oninput="clearError('al')">
+                    <button type="submit" class="btn-main w-full" data-i18n="btn-adm-submit">Login Admin</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="notif-modal" class="modal">
+        <div class="modal-content glass-morph" data-aos="fade-down" data-aos-duration="300">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 data-i18n="notif-title" style="margin-bottom: 1.5rem;">Notifikasi Anda</h2>
+            <div id="notif-list" class="notif-list-container">
+                </div>
+        </div>
+    </div>
+
+    <div id="reply-modal" class="modal">
+        <div class="modal-content glass-morph" data-aos="fade-down" data-aos-duration="300">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 data-i18n="reply-title" style="margin-bottom: 0.5rem;">Balas Laporan</h2>
+            <p id="reply-target-user" style="color: var(--text-light); margin-bottom: 1rem;"></p>
+            
+            <div class="template-buttons" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                <button type="button" class="btn-sub" onclick="useTemplate('Laporan telah diterima dan sedang kami proses.')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" data-i18n="tpl-1">Template 1</button>
+                <button type="button" class="btn-sub" onclick="useTemplate('Terima kasih, tim keamanan sudah meluncur ke lokasi.')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" data-i18n="tpl-2">Template 2</button>
+                <button type="button" class="btn-sub" onclick="useTemplate('Laporan selesai ditangani. Kondisi sudah aman.')" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" data-i18n="tpl-3">Template 3</button>
+            </div>
+
+            <form id="admin-reply-form">
+                <input type="hidden" id="reply-report-id">
+                <input type="hidden" id="reply-user-target">
+                <textarea id="reply-message" rows="4" required placeholder="Ketik pesan balasan di sini..." style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--secondary-bg); color: var(--text-main); margin-bottom: 1rem; font-family: inherit;"></textarea>
+                <button type="submit" class="btn-main w-full" data-i18n="btn-send-reply">Kirim Balasan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="edit-user-modal" class="modal">
+        <div class="modal-content glass-morph" data-aos="fade-down" data-aos-duration="300">
+            <span class="close-btn" onclick="closeModals()">&times;</span>
+            <h2 style="margin-bottom: 1.5rem;">Edit Data User</h2>
+            
+            <form id="admin-edit-user-form">
+                <input type="hidden" id="edit-original-username">
+                
+                <label style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; display: block;">Username Warga</label>
+                <input type="text" id="edit-username" required style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--secondary-bg); color: var(--text-main); margin-bottom: 1rem; font-family: inherit;">
+                
+                <label style="font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; display: block;">Password Baru</label>
+                <input type="password" id="edit-password" required placeholder="Masukkan password baru" style="width: 100%; padding: 1rem; border-radius: 12px; border: 1px solid var(--glass-border); background: var(--secondary-bg); color: var(--text-main); margin-bottom: 1.5rem; font-family: inherit;">
+                
+                <button type="submit" class="btn-main w-full">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+</body>
+</html>
