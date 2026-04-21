@@ -109,7 +109,7 @@ const translations = {
         "nav-edu": "Education",
         "nav-report": "Report",
         "nav-admin": "Dashboard",
-        "btn-login": "Sign In",
+        "btn-login": "Login",
         "btn-logout": "Logout",
         "hero-badge": "Safe & Secure Community",
         "hero-title": "When Safety Meets Awareness.",
@@ -140,13 +140,13 @@ const translations = {
         "btn-submit": "Submit Report Now",
         "admin-title": "Admin Dashboard",
         "footer-text": "Created to enhance community security.",
-        "tab-login": "Sign In",
+        "tab-login": "Login",
         "tab-signup": "Sign Up",
         "auth-log-title": "Welcome Back",
         "auth-log-sub": "Please log in to contribute.",
         "ph-username": "Username",
         "ph-password": "Password",
-        "btn-login-submit": "Sign In",
+        "btn-login-submit": "Login",
         "auth-reg-title": "Create Account",
         "auth-reg-sub": "Let's keep the neighborhood safe together.",
         "ph-new-user": "Create Username",
@@ -154,7 +154,7 @@ const translations = {
         "btn-reg-submit": "Sign Up",
         "auth-adm-title": "Admin Access",
         "auth-adm-sub": "Exclusive for neighborhood admins.",
-        "btn-adm-submit": "Admin",
+        "btn-adm-submit": "Login Admin",
         "notif-title": "Your Notifications",
         "reply-title": "Reply to Report",
         "btn-send-reply": "Send Reply",
@@ -164,11 +164,11 @@ const translations = {
 
         // --- JS ALERTS & ERRORS TRANSLATION ---
         "msg-err-exist": "Username is already taken by another user!",
-        "msg-err-login": "Invalid username or password",
+        "msg-err-login": "The username or password you entered is incorrect.",
         "msg-err-admin": "Invalid Admin credentials!",
         "msg-succ-reg": "Registration Successful!",
         "msg-succ-reg-desc": "Your account has been created. Please log in using that account.",
-        "msg-succ-login": "Sign In Successful",
+        "msg-succ-login": "Login Successful",
         "msg-succ-login-desc": "Welcome back, ",
         "msg-succ-admin": "Access Granted",
         "msg-succ-admin-desc": "Welcome to the Admin Dashboard.",
@@ -208,7 +208,6 @@ const translations = {
     }
 };
 
-// Fungsi pembantu untuk mengambil string terjemahan di dalam JS
 function t(key) {
     const lang = localStorage.getItem('safeHavenLang') || 'id';
     return translations[lang][key] || key;
@@ -244,7 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         localStorage.setItem('safeHavenLang', lang);
 
-        // Re-render Dynamic JS Content agar ikut berubah bahasa saat itu juga
         const currentUser = JSON.parse(localStorage.getItem('safeHavenActiveUser'));
         if(currentUser && currentUser.role === 'admin') {
             if(window.renderAdminReports) window.renderAdminReports();
@@ -286,7 +284,6 @@ const navAdmin = document.getElementById('nav-admin');
 const reportSection = document.getElementById('report-section');
 const adminDashboard = document.getElementById('admin-dashboard');
 
-// Buka Modal & Lock Scroll
 window.openLoginModal = function() {
     loginModal.style.display = 'flex';
     document.body.classList.add('no-scroll');
@@ -304,6 +301,12 @@ window.closeModals = function() {
     replyModal.style.display = 'none';
     editUserModal.style.display = 'none';
     document.body.classList.remove('no-scroll');
+    
+    // FIX BUG 1: Kosongkan seluruh isian form saat modal ditutup
+    document.getElementById('user-login-form').reset();
+    document.getElementById('user-signup-form').reset();
+    document.getElementById('admin-login-form').reset();
+    ['ul', 'us', 'al'].forEach(prefix => clearError(prefix));
 };
 
 window.addEventListener('click', (e) => {
@@ -315,13 +318,17 @@ window.switchAuthTab = function(tabName) {
     document.querySelectorAll('.auth-form').forEach(form => form.style.display = 'none');
     document.getElementById(`tab-${tabName}`).classList.add('active');
     document.getElementById(`form-${tabName}`).style.display = 'block';
+    
+    // Bersihkan isi dan error form saat pindah tab
+    document.getElementById('user-login-form').reset();
+    document.getElementById('user-signup-form').reset();
+    document.getElementById('admin-login-form').reset();
     ['ul', 'us', 'al'].forEach(prefix => clearError(prefix));
 };
 
 function checkAuth() {
     const currentUser = JSON.parse(localStorage.getItem('safeHavenActiveUser'));
     
-    // Default hidden
     navReport.style.display = 'none';
     navAdmin.style.display = 'none';
     reportSection.style.display = 'none';
@@ -393,13 +400,17 @@ document.getElementById('user-signup-form').addEventListener('submit', (e) => {
         users.push({ username: newUsername, password: newPassword });
         localStorage.setItem('safeHavenUsers', JSON.stringify(users));
         
+        // FIX BUG 2: Hilangkan form (tutup modal) DULU sebelum alert muncul
+        closeModals();
+        
         Swal.fire({ 
             icon: 'success', 
             title: t('msg-succ-reg'), 
             text: t('msg-succ-reg-desc'),
             confirmButtonColor: 'var(--accent)'
         }).then(() => {
-            e.target.reset();
+            // Kita pindahkan ke tab login secara diam-diam.
+            // Saat user mengklik 'Masuk' di navbar, dia langsung melihat form login yang sudah kosong.
             switchAuthTab('user-login');
         });
     }

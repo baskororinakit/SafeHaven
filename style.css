@@ -49,6 +49,12 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     transition: background 0.4s ease, color 0.4s ease;
+    -ms-overflow-style: none;  /* IE and Edge */    
+    /* scrollbar-width: none;  */
+}
+
+body::-webkit-scrollbar {
+    display: none;
 }
 
 /* Kelas untuk menghentikan scroll background saat modal terbuka */
@@ -361,11 +367,16 @@ h1, h2, h3, h4 {
 .edu-item {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 3rem;
     background: var(--primary-bg);
     padding: 3rem;
     border-radius: 30px;
     border: 1px solid var(--glass-border);
+}
+
+.edu-text {
+    flex: 1; 
 }
 
 .edu-text h4 {
@@ -383,6 +394,7 @@ h1, h2, h3, h4 {
     justify-content: center;
     font-size: 2.5rem;
     color: white;
+    flex-shrink: 0; 
 }
 
 /* ============================================================
@@ -438,7 +450,6 @@ h1, h2, h3, h4 {
     justify-content: center;
     align-items: center;
     padding: 1rem;
-    /* Tambahan agar isi modal bisa discroll jika terlalu panjang di HP */
     overflow-y: auto; 
 }
 
@@ -497,7 +508,7 @@ h1, h2, h3, h4 {
 
 /* Styling untuk Teks Error (Merah) di dalam form */
 .error-msg {
-    color: #ff4d4d; /* Warna merah terang */
+    color: #ff4d4d;
     font-size: 0.85rem !important;
     font-weight: 600;
     margin-bottom: 0.8rem !important;
@@ -506,6 +517,11 @@ h1, h2, h3, h4 {
     padding: 8px 12px;
     border-radius: 8px;
     border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+/* FIX: Z-Index SweetAlert agar selalu berada di depan Modal (2000) */
+.swal2-container {
+    z-index: 9999 !important;
 }
 
 /* Notification Items */
